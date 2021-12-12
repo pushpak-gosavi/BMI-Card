@@ -1,16 +1,12 @@
-
 import 'package:bmicalulator/icon_content.dart';
 import 'package:bmicalulator/resulable_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'constants.dart';
 
-const double bottom_container_heght= 80;
-const activeCardColour= Color(0xFF1D1E33);
-const inActiveCardColour= Color(0xFF111328);
-const bottomContainerColor= Color(0xFFEB1555);
+enum Gender { Male, Female }
 
-enum Gender {Male,Female}
 class InputPage extends StatefulWidget {
   const InputPage({Key? key}) : super(key: key);
 
@@ -19,11 +15,13 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-
-  Gender ? selectedGender;
-  bool isMale=true;
-  Color maleCardColor= inActiveCardColour;
-  Color femaleCardColor = inActiveCardColour;
+  Gender? selectedGender;
+  bool isMale = true;
+  Color maleCardColor = kInActiveCardColour;
+  Color femaleCardColor = kInActiveCardColour;
+  int height = 180;
+  int weight = 60;
+  int age = 25;
 
   // void updatedColor(Gender selectedGender){
   //   if(selectedGender == Gender.Male){
@@ -47,49 +45,183 @@ class _InputPageState extends State<InputPage> {
       ),
       body: SafeArea(
         child: Container(
-          child: Column(
-            children: <Widget>[
-              Expanded(child: Row(
-                children: [
-                  Expanded(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+                child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedGender = Gender.Male;
+                      });
+                    },
                     child: ResulableCard(
-                      onPressed: (){
-                        selectedGender= Gender.Male;
-                      },
                       //colour: maleCardColor,
-                      colour: selectedGender == Gender.Male ? activeCardColour : inActiveCardColour,
-                    cardChild: IconContent(icon: FontAwesomeIcons.mars, gender: 'MALE'),),
+                      colour: selectedGender == Gender.Male
+                          ? kActiveCardColour
+                          : kInActiveCardColour,
+                      cardChild: IconContent(
+                          icon: FontAwesomeIcons.mars, gender: 'MALE'),
+                    ),
                   ),
-                  Expanded(
-                    child: ResulableCard(
-                      onPressed: (){
-                        selectedGender = Gender.Female;
-                      },
-                      //colour: femaleCardColor,
-                      colour: selectedGender==Gender.Female ? activeCardColour : inActiveCardColour,
-                    cardChild: IconContent(icon: FontAwesomeIcons.venus, gender: 'FEMALE'),)
+                ),
+                Expanded(
+                    child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedGender = Gender.Female;
+                    });
+                  },
+                  child: ResulableCard(
+                    //colour: femaleCardColor,
+                    colour: selectedGender == Gender.Female
+                        ? kActiveCardColour
+                        : kInActiveCardColour,
+                    cardChild: IconContent(
+                        icon: FontAwesomeIcons.venus, gender: 'FEMALE'),
                   ),
-                ],
-              )),
-              Expanded(child: ResulableCard(colour: activeCardColour)),
-              Expanded(child: Row(
+                )),
+              ],
+            )),
+            Expanded(
+                child: ResulableCard(
+              colour: kActiveCardColour,
+              cardChild: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: ResulableCard(colour: activeCardColour,
-                      cardChild: Column(),),
+                  Text(
+                    'Height',
+                    style: kLableTextStyle,
                   ),
-                  Expanded(
-                    child: ResulableCard(colour: activeCardColour,
-                      cardChild: Column(),),
-                  )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        height.toString(),
+                        style: kBigText,
+                      ),
+                      Text(
+                        'cm',
+                        style: kLableTextStyle,
+                      )
+                    ],
+                  ),
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      activeTrackColor: Colors.white,
+                      inactiveTrackColor: Color(0xFF8D8E98),
+                      thumbColor: Color(0xFFEB1555),
+                      overlayColor: Color(0x29EB1555),
+                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 16),
+                      overlayShape: RoundSliderOverlayShape(overlayRadius: 30),
+                    ),
+                    child: Slider(
+                      min: 120.0,
+                      max: 220.0,
+                      value: height.toDouble(),
+                      onChanged: (double newValue) {
+                        setState(() {
+                          height = newValue.round();
+                        });
+                      },
+                    ),
+                  ),
                 ],
-              )),
-              Container( color: bottomContainerColor,
-              height: bottom_container_heght,
-              width: double.infinity,)
-            ],
-          )
-        ),
+              ),
+            )),
+            Expanded(
+                child: Row(
+              children: [
+                Expanded(
+                  child: ResulableCard(
+                    colour: kActiveCardColour,
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Weight',
+                          style: kLableTextStyle,
+                        ),
+                        Text(
+                          weight.toString(),
+                          style: kBigText,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularIconButton(iconData:FontAwesomeIcons.minus,
+                            funOnPressed: (){
+                              setState(() {
+                                weight--;
+                              });
+                            },
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            CircularIconButton(iconData : FontAwesomeIcons.plus, funOnPressed: (){
+                              setState(() {
+                                weight++;
+                              });
+                            },),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ResulableCard(
+                    colour: kActiveCardColour,
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Age',
+                          style: kLableTextStyle,
+                        ),
+                        Text(
+                          age.toString(),
+                          style: kBigText,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularIconButton(iconData:FontAwesomeIcons.minus,
+                              funOnPressed: (){
+                                setState(() {
+                                  age--;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            CircularIconButton(iconData : FontAwesomeIcons.plus, funOnPressed: (){
+                              setState(() {
+                                age++;
+                              });
+                            },),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            )),
+            Container(
+              color: kBottomContainerColor,
+              height: kBottom_container_heght,
+              width: double.infinity,
+            )
+          ],
+        )),
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {  },
@@ -99,4 +231,24 @@ class _InputPageState extends State<InputPage> {
   }
 }
 
+class CircularIconButton extends StatelessWidget {
+  CircularIconButton({required this.iconData, required this.funOnPressed});
 
+  IconData iconData;
+  final VoidCallback funOnPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      child: Icon(iconData),
+      elevation: 0.0,
+      shape: CircleBorder(),
+      constraints: BoxConstraints.tightFor(
+        width: 56.0,
+        height: 56.0,
+      ),
+      fillColor: Color(0xFF4C4E5F),
+      onPressed: funOnPressed,
+    );
+  }
+}

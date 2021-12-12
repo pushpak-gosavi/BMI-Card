@@ -1,3 +1,4 @@
+import 'package:bmicalulator/constants.dart';
 import 'package:flutter/material.dart';
 class IconContent extends StatelessWidget {
   IconContent({ required this.icon, required this.gender});
@@ -10,7 +11,7 @@ class IconContent extends StatelessWidget {
       children: [
         Icon(icon , size: 80,),
         SizedBox(height: 10,),
-        Text(gender, style: TextStyle(fontSize: 18, color: Color(0xFF8D8E98)),)
+        Text(gender, style: kLableTextStyle,)
       ],
     );
   }
