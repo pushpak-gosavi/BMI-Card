@@ -1,8 +1,11 @@
+import 'package:bmicalulator/calculator_brain.dart';
 import 'package:bmicalulator/icon_content.dart';
 import 'package:bmicalulator/resulable_card.dart';
+import 'package:bmicalulator/result_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'bottom_button.dart';
 import 'constants.dart';
 
 enum Gender { Male, Female }
@@ -215,11 +218,13 @@ class _InputPageState extends State<InputPage> {
                 )
               ],
             )),
-            Container(
-              color: kBottomContainerColor,
-              height: kBottom_container_heght,
-              width: double.infinity,
-            )
+            BottomButton(title: 'CALCULATE', onTap: (){
+              CalculatorBrain calBmi = CalculatorBrain(height: height, weight: weight);
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  ResultPage( bmiResult: calBmi.calculateBMI(),
+                    resultText: calBmi.getResult(),
+                  interpretation:  calBmi.getInterpretation(),)));
+              },)
           ],
         )),
       ),
@@ -230,6 +235,7 @@ class _InputPageState extends State<InputPage> {
     );
   }
 }
+
 
 class CircularIconButton extends StatelessWidget {
   CircularIconButton({required this.iconData, required this.funOnPressed});
