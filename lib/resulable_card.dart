@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 class ResulableCard extends StatelessWidget {
   //required this.onPressed
-  ResulableCard({required this.colour,  this.cardChild, });
+  ResulableCard({required this.colour,  this.cardChild });
   Widget ?cardChild;
   Color colour;
   //Function  onPressed;
